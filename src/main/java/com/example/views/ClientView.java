@@ -5,7 +5,9 @@ import java.util.Scanner;
 
 import com.example.core.data.entities.Client;
 import com.example.core.data.entities.DemandeDette;
+import com.example.core.data.entities.User;
 import com.example.core.services.interfaces.IClientService;
+import com.example.core.services.interfaces.IUserService;
 import com.example.views.Interfaces.IClientView;
 
 public class ClientView extends View<Client> implements IClientView{
@@ -14,9 +16,11 @@ public class ClientView extends View<Client> implements IClientView{
    
     private DemandeDette demandeDette = new DemandeDette();
     private IClientService clientService;
+    private IUserService userService ;
 
-    public ClientView(IClientService clientService){
+    public ClientView(IClientService clientService,IUserService userService){
         this.clientService = clientService;
+        this.userService = userService;
     }
 
     @Override
@@ -78,42 +82,18 @@ public class ClientView extends View<Client> implements IClientView{
         }
     }
 
-    // @Override
-    // public void AjoutDette() {
-    //     List<DemandeDette> listeDemandeDettes = new ArrayList<>();
+    @Override
+    public void associerCompte(){
+        System.out.println("Saisissez l'id du client");
+        int clientId = scanner.nextInt();
+        Client client = clientService.findClientById(clientId);
+        System.out.println("Saisissez l'id du user que vous voulez associer au client");
+        User user = userService.userFindById(clientId);
 
-    //     System.out.println("Renseigner le Montant Total : ");
-
-    //     demandeDette.setMontantTotal(scanner.nextInt());
-
-    //     EtatDemandeDette etat = null;
-    //     do {
-    //         System.out.println("Renseigner l'état de la dette (ENCOURS/ANNULER/VALIDER) : ");
-    //         String input = scanner.nextLine().trim().toUpperCase();
-
-    //         try {
-    //             etat = EtatDemandeDette.valueOf(input);
-    //             demandeDette.setEtat(etat);
-    //         } catch (IllegalArgumentException e) {
-    //             System.out.println("Entrée non valide, veuillez réessayer.");
-    //         }
-    //     } while (etat == null);
-
-    //     demandeDette.setDate(LocalDate.now());
-    //     listeDemandeDettes.add(demandeDette);
-
-    //     client.setDemandeDettes(listeDemandeDettes);
-    // }
-
-    // @Override
-    // public void AfficherDemandeDette(){
-    //     System.out.println(client.getDemandeDettes());
-    // }
-
-    // @Override
-    // protected List<Client> getAll() {
-    //     throw new UnsupportedOperationException("Not supported yet.");
-    // }
+        client.setUserAccount(user);
+        
+        
+    }
 
     @Override
     protected List<Client> getAll() {

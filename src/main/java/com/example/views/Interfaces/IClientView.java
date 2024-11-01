@@ -6,5 +6,6 @@ public interface IClientView extends  IView<Client>{
     void rechercherParTelephone();
     void AjoutDette();
     void AfficherDemandeDette();
+    void associerCompte();
     
 }

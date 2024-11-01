@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.example.core.data.entities.Paiement;
 import com.example.core.data.entities.User;
 import com.example.core.repositories.list.interfaces.IUserRepository;
 import com.example.core.repository.impl.RepositoryDb;
@@ -66,4 +67,27 @@ public class UserRepositoryDb extends RepositoryDb<User> implements IUserReposit
         return user;
     }
 
+    @Override
+    public User findById(int id) {
+        String sql = "SELECT * FROM " + tableName + " WHERE id = ?";
+        User user = null;
+
+        this.getConnection();  // Obtenir la connexion
+        try (PreparedStatement stmt = this.connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    try {
+                        user = convertToObject(rs);
+                    } catch (IllegalAccessException ex) {
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            this.closeConnection();  // Fermer la connexion
+        }
+        return user;
+    }
 }

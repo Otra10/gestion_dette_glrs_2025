@@ -7,4 +7,5 @@ import com.example.core.data.entities.User;
 public interface IUserService{
     List<User> getAll();
     void store(User user);
+    User userFindById(int id);
 }

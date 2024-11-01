@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import com.example.core.data.entities.Paiement;
 import com.example.core.data.entities.User;
 import com.example.core.repositories.list.interfaces.IUserRepository;
 import com.example.core.repository.impl.RepositoryJpa;
@@ -36,6 +37,12 @@ public class UserRepositoryJpa extends  RepositoryJpa<User> implements IUserRepo
     public User findByLogin(String login) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findByLogin'");
+    }
+
+
+    @Override
+    public User findById(int id) {
+        return entityManager.find(User.class, id);
     }
 
 }

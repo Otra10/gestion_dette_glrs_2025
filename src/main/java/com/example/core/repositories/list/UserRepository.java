@@ -16,6 +16,17 @@ public class UserRepository extends RepositoryList<User> implements IUserReposit
     }
 
     @Override
+    public User findById(int id) {
+        for (User user : list) {
+            if(user.getId()==id){
+                return user;
+            }
+        }
+        return null;
+    }
+
+
+    @Override
     public User findByLoginAndPassword(String login, String password) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findByLoginAndPassword'");

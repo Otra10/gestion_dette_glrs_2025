@@ -38,7 +38,7 @@ public class FactoryView implements IFactoryView {
 
     @Override
     public IClientView getInstanceClientView() {
-        return clientView == null ? new ClientView(factoryService.getInstanceClientService()) : clientView;
+        return clientView == null ? new ClientView(factoryService.getInstanceClientService(),factoryService.getInstanceUserService()) : clientView;
     }
 
     @Override

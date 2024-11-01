@@ -122,7 +122,7 @@ public class Menu {
             // Appeler les actions selon le choix de l'utilisateur
             demanderActionBoutiquier(choix);
 
-        } while (choix != 5); // Continue tant que l'utilisateur ne choisit pas de quitter
+        } while (choix != 9); // Continue tant que l'utilisateur ne choisit pas de quitter
 
     }
 
@@ -194,6 +194,9 @@ public class Menu {
                 // detteView.listerDemandesAvecFiltre();
                 break;
             case 8:
+                clientView.associerCompte();
+                break;
+            case 9:
                 System.out.println("Au revoir!");
                 break;
             default:

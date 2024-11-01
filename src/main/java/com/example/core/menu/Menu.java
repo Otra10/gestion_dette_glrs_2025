@@ -5,8 +5,8 @@ import java.util.Scanner;
 import com.example.core.ConfigLoader;
 import com.example.core.data.entities.User;
 import com.example.core.factory.implement.FactoryRepository;
-import com.example.core.factory.implement.FactoryRepositoryDb;
-// import com.example.core.factory.implement.FactoryRepositoryJpa;
+// import com.example.core.factory.implement.FactoryRepositoryDb;
+import com.example.core.factory.implement.FactoryRepositoryJpa;
 import com.example.core.factory.implement.FactoryService;
 import com.example.core.factory.implement.FactoryServiceDb;
 import com.example.core.factory.implement.FactoryServiceJpa;
@@ -25,8 +25,8 @@ public class Menu {
     }
 
     static FactoryRepository factoryRepository;
-    static FactoryRepositoryDb factoryRepositoryDb;
-    // static FactoryRepositoryJpa factoryRepositoryJpa;
+    // static FactoryRepositoryDb factoryRepositoryDb;
+    static FactoryRepositoryJpa factoryRepositoryJpa;
     static FactoryService factoryService;
     static FactoryServiceDb factoryServiceDb;
     static FactoryServiceJpa factoryServiceJpa;
@@ -52,16 +52,16 @@ public class Menu {
 
         // Instancier les factories en fonction du type de repository
         switch (repositoryType.toLowerCase()) {
-            // case "jpa":
-            //     factoryRepositoryJpa = new FactoryRepositoryJpa();
-            //     factoryServiceJpa = new FactoryServiceJpa(factoryRepositoryJpa);
-            //     factoryView = new FactoryView(factoryServiceJpa, factoryRepositoryJpa);
-            //     break;
-            case "jdbc":
-                factoryRepositoryDb = new FactoryRepositoryDb();
-                factoryServiceDb = new FactoryServiceDb(factoryRepositoryDb);
-                factoryView = new FactoryView(factoryServiceDb, factoryRepositoryDb);
+            case "jpa":
+                factoryRepositoryJpa = new FactoryRepositoryJpa();
+                factoryServiceJpa = new FactoryServiceJpa(factoryRepositoryJpa);
+                factoryView = new FactoryView(factoryServiceJpa, factoryRepositoryJpa);
                 break;
+            // case "jdbc":
+            //     factoryRepositoryDb = new FactoryRepositoryDb();
+            //     factoryServiceDb = new FactoryServiceDb(factoryRepositoryDb);
+            //     factoryView = new FactoryView(factoryServiceDb, factoryRepositoryDb);
+            //     break;
             // case "list":
             //     factoryRepository = new FactoryRepository();
             //     factoryService = new FactoryService(factoryRepository);

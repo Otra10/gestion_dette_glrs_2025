@@ -1,11 +1,11 @@
 package com.example.core.factory.implement;
 
 import com.example.core.factory.IFactoryRepository;
-import com.example.core.repositories.db.ArticleRepositoryDb;
-import com.example.core.repositories.db.ClientRepositoryDb;
-import com.example.core.repositories.db.DetteRepositoryDb;
-import com.example.core.repositories.db.PaiementRepositoryDb;
-import com.example.core.repositories.db.UserRepositoryDb;
+import com.example.core.repositories.jpa.ArticleRepositoryJpa;
+import com.example.core.repositories.jpa.ClientRepositoryJpa;
+import com.example.core.repositories.jpa.DetteRepositoryJpa;
+import com.example.core.repositories.jpa.PaiementRepositoryJpa;
+import com.example.core.repositories.jpa.UserRepositoryJpa;
 import com.example.core.repositories.list.DemandeDetteRepository;
 import com.example.core.repositories.list.interfaces.IArticleRepository;
 import com.example.core.repositories.list.interfaces.IClientRepository;
@@ -14,43 +14,44 @@ import com.example.core.repositories.list.interfaces.IDetteRepository;
 import com.example.core.repositories.list.interfaces.IPaiementRepository;
 import com.example.core.repositories.list.interfaces.IUserRepository;
 
-
-public class FactoryRepositoryDb implements IFactoryRepository{
-    private IArticleRepository articleRepositoryDb;
-    private IClientRepository clientRepositoryDb;
-    private IDetteRepository detteRepositoryDb;
-    private IUserRepository userRepositoryDb;
-    private IPaiementRepository paiementRepositoryDb;
+public class FactoryRepositoryJpa implements IFactoryRepository{
+    private IArticleRepository articleRepository;
+    private IClientRepository clientRepository;
+    private IDetteRepository detteRepository;
+    private IUserRepository userRepository;
+    private IPaiementRepository paiementRepository;
     private IDemandeDetteRepository demandeDetteRepository;
 
     @Override
     public IArticleRepository getInstanceArticleRepository() {
-        return articleRepositoryDb == null ? new ArticleRepositoryDb() : articleRepositoryDb;
+        return articleRepository == null ? new ArticleRepositoryJpa() : articleRepository;
     }
 
     @Override
     public IClientRepository getInstanceClientRepository() {
-        return clientRepositoryDb == null ? new ClientRepositoryDb() : clientRepositoryDb;
+        return clientRepository == null ? new ClientRepositoryJpa() : clientRepository;
     }
 
     @Override
     public IDetteRepository getInstanceDetteRepository() {
-        return detteRepositoryDb == null ? new DetteRepositoryDb() : detteRepositoryDb;
+        return detteRepository == null ? new DetteRepositoryJpa() : detteRepository;
     }
 
 
     @Override
     public IPaiementRepository getInstacePaiementRepository() {
-        return paiementRepositoryDb == null ? new PaiementRepositoryDb() : paiementRepositoryDb;
+        return paiementRepository == null ? new PaiementRepositoryJpa() : paiementRepository;
     }
 
     @Override
     public IUserRepository getInstanceUserRepository() {
-        return userRepositoryDb == null ? new UserRepositoryDb() : userRepositoryDb;
+        return userRepository == null ? new UserRepositoryJpa() : userRepository;
     }
 
     @Override
     public IDemandeDetteRepository getInstaceDemandeDetteRepository() {
         return demandeDetteRepository == null ? new DemandeDetteRepository() : demandeDetteRepository;
     }
+
+    
 }

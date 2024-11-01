@@ -7,6 +7,7 @@ import java.util.Scanner;
 import com.example.core.ConfigLoader;
 import com.example.core.data.Enum.RoleUser;
 import com.example.core.data.entities.User;
+import com.example.core.repositories.db.UserRepositoryDb;
 import com.example.core.repositories.list.UserRepository;
 import com.example.core.session.SessionManager;
 
@@ -15,7 +16,7 @@ public class Authentification {
    // Simuler une base de données d'utilisateurs en mémoire
     private static List<User> users = new ArrayList<>();
     static UserRepository listUserRepository = new UserRepository();
-    // static UserRepositoryDb userRepositoryDb = new UserRepositoryDb();
+    static UserRepositoryDb userRepositoryDb = new UserRepositoryDb();
     // static UserRepositoryJpa userRepository = new UserRepositoryJpa(); 
     static String repositoryType = ConfigLoader.getRepositoryType();
 
@@ -59,16 +60,16 @@ public class Authentification {
             //     }
             //     break;
 
-            // case "jdbc":
-            //     // Utilisation du repository JPA
-            //     User userdb = userRepositoryDb.findByLoginAndPassword(login, password);
-            //     if (userdb != null) {
-            //         System.out.println("Connexion réussie !");
-            //         SessionManager.login(userdb);
-            //         System.out.println(SessionManager.getCurrentUser());
-            //         return userdb;
-            //     }
-            //     break;
+            case "jdbc":
+                // Utilisation du repository JPA
+                User userdb = userRepositoryDb.findByLoginAndPassword(login, password);
+                if (userdb != null) {
+                    System.out.println("Connexion réussie !");
+                    SessionManager.login(userdb);
+                    System.out.println(SessionManager.getCurrentUser());
+                    return userdb;
+                }
+                break;
 
             default:
                 throw new AssertionError("Type de repository inconnu : " + repositoryType);

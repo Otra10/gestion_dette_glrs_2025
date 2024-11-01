@@ -5,7 +5,7 @@ import java.util.Scanner;
 import com.example.core.ConfigLoader;
 import com.example.core.data.entities.User;
 import com.example.core.factory.implement.FactoryRepository;
-// import com.example.core.factory.implement.FactoryRepositoryDb;
+import com.example.core.factory.implement.FactoryRepositoryDb;
 // import com.example.core.factory.implement.FactoryRepositoryJpa;
 import com.example.core.factory.implement.FactoryService;
 import com.example.core.factory.implement.FactoryServiceDb;
@@ -25,7 +25,7 @@ public class Menu {
     }
 
     static FactoryRepository factoryRepository;
-    // static FactoryRepositoryDb factoryRepositoryDb;
+    static FactoryRepositoryDb factoryRepositoryDb;
     // static FactoryRepositoryJpa factoryRepositoryJpa;
     static FactoryService factoryService;
     static FactoryServiceDb factoryServiceDb;
@@ -57,16 +57,16 @@ public class Menu {
             //     factoryServiceJpa = new FactoryServiceJpa(factoryRepositoryJpa);
             //     factoryView = new FactoryView(factoryServiceJpa, factoryRepositoryJpa);
             //     break;
-            // case "jdbc":
-            //     factoryRepositoryDb = new FactoryRepositoryDb();
-            //     factoryServiceDb = new FactoryServiceDb(factoryRepositoryDb);
-            //     factoryView = new FactoryView(factoryServiceDb, factoryRepositoryDb);
-            //     break;
-            case "list":
-                factoryRepository = new FactoryRepository();
-                factoryService = new FactoryService(factoryRepository);
-                factoryView = new FactoryView(factoryService, factoryRepository);
+            case "jdbc":
+                factoryRepositoryDb = new FactoryRepositoryDb();
+                factoryServiceDb = new FactoryServiceDb(factoryRepositoryDb);
+                factoryView = new FactoryView(factoryServiceDb, factoryRepositoryDb);
                 break;
+            // case "list":
+            //     factoryRepository = new FactoryRepository();
+            //     factoryService = new FactoryService(factoryRepository);
+            //     factoryView = new FactoryView(factoryService, factoryRepository);
+            //     break;
             default:
                 throw new IllegalArgumentException("Type de repository non reconnu: " + repositoryType);
         }

@@ -65,4 +65,10 @@ public class ClientRepositoryJpa extends RepositoryJpa<Client> implements IClien
         }
     }
 
+    @Override
+    public void activeCompte(int clientId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'activeCompte'");
+    }
+
 }

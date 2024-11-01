@@ -2,6 +2,7 @@ package com.example.core.menu;
 
 import java.util.Scanner;
 
+import com.example.core.ConfigLoader;
 import com.example.core.data.entities.User;
 import com.example.core.factory.implement.FactoryRepository;
 import com.example.core.factory.implement.FactoryRepositoryDb;
@@ -10,8 +11,10 @@ import com.example.core.factory.implement.FactoryService;
 import com.example.core.factory.implement.FactoryServiceDb;
 import com.example.core.factory.implement.FactoryServiceJpa;
 import com.example.core.factory.implement.FactoryView;
+import com.example.core.session.SessionManager;
 import com.example.views.Interfaces.IArticleView;
 import com.example.views.Interfaces.IClientView;
+import com.example.views.Interfaces.IDemandeDetteView;
 import com.example.views.Interfaces.IDetteView;
 import com.example.views.Interfaces.IPaiementView;
 import com.example.views.Interfaces.IUserView;
@@ -21,18 +24,62 @@ public class Menu {
     public Menu() {
     }
 
-    static FactoryRepository factoryRepository = new FactoryRepository();
-    static FactoryRepositoryDb factoryRepositoryDb = new FactoryRepositoryDb();
-    static FactoryRepositoryJpa factoryRepositoryJpa = new FactoryRepositoryJpa();
-    static FactoryServiceJpa factoryServiceJpa = new FactoryServiceJpa(factoryRepositoryJpa);
-    static FactoryService factoryService = new FactoryService(factoryRepository);
-    static FactoryServiceDb factoryServiceDb = new FactoryServiceDb(factoryRepositoryDb);
-    static FactoryView factoryView = new FactoryView(factoryService, factoryRepository);
-    static IClientView clientView = factoryView.getInstanceClientView();
-    static IArticleView articleView = factoryView.getInstanceArticleView();
-    static IUserView userView = factoryView.getInstanceUserView();
-    static IDetteView detteView = factoryView.getInstanceDette();
-    static IPaiementView paiementView = factoryView.getInstancePaiementView();
+    static FactoryRepository factoryRepository;
+    static FactoryRepositoryDb factoryRepositoryDb;
+    static FactoryRepositoryJpa factoryRepositoryJpa;
+    static FactoryService factoryService;
+    static FactoryServiceDb factoryServiceDb;
+    static FactoryServiceJpa factoryServiceJpa;
+    static FactoryView factoryView;
+
+    static IClientView clientView;
+    static IArticleView articleView;
+    static IUserView userView;
+    static IDetteView detteView;
+    static IPaiementView paiementView;
+    static IDemandeDetteView demandeDetteView;
+
+    private static User user = SessionManager.getCurrentUser();
+
+    static {
+        initializeFactories();
+        initializeViews();
+    }
+
+    private static void initializeFactories() {
+        // Charger le type de repository depuis ConfigLoader
+        String repositoryType = ConfigLoader.getRepositoryType();
+
+        // Instancier les factories en fonction du type de repository
+        switch (repositoryType.toLowerCase()) {
+            case "jpa":
+                factoryRepositoryJpa = new FactoryRepositoryJpa();
+                factoryServiceJpa = new FactoryServiceJpa(factoryRepositoryJpa);
+                factoryView = new FactoryView(factoryServiceJpa, factoryRepositoryJpa);
+                break;
+            case "jdbc":
+                factoryRepositoryDb = new FactoryRepositoryDb();
+                factoryServiceDb = new FactoryServiceDb(factoryRepositoryDb);
+                factoryView = new FactoryView(factoryServiceDb, factoryRepositoryDb);
+                break;
+            case "list":
+                factoryRepository = new FactoryRepository();
+                factoryService = new FactoryService(factoryRepository);
+                factoryView = new FactoryView(factoryService, factoryRepository);
+                break;
+            default:
+                throw new IllegalArgumentException("Type de repository non reconnu: " + repositoryType);
+        }
+    }
+
+    private static void initializeViews() {
+        clientView = factoryView.getInstanceClientView();
+        articleView = factoryView.getInstanceArticleView();
+        userView = factoryView.getInstanceUserView();
+        detteView = factoryView.getInstanceDette();
+        paiementView = factoryView.getInstancePaiementView();
+        demandeDetteView = factoryView.getInstanceDemandeDetteView();
+    }
 
     // Méthode pour afficher le menu selon le rôle de l'utilisateur
     public static void afficherMenu(User user) {
@@ -65,7 +112,8 @@ public class Menu {
             System.out.println("5. Lister les dettes non soldées d'un client");
             System.out.println("6. Enregistrer un paiement pour une dette");
             System.out.println("7. Lister les demandes de dette en cours");
-            System.out.println("8. Quitter");
+            System.out.println("8. Associer un compte à un client");
+            System.out.println("9. Quitter");
 
             System.out.print("Entrez votre choix : ");
             choix = scanner.nextInt();
@@ -181,13 +229,13 @@ public class Menu {
     public static void demanderActionClient(int choix) {
         switch (choix) {
             case 1:
-                // Logique pour lister les dettes
+                detteView.listerDettes(user);
                 break;
             case 2:
-                // Logique pour faire une demande de dette
+                demandeDetteView.ajout();
                 break;
             case 3:
-                // Logique pour lister les demandes de dette
+                demandeDetteView.afficherDemandesPourUtilisateur(user);
                 break;
             case 5:
                 System.out.println("Au revoir !");

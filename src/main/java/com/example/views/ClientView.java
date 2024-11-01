@@ -19,6 +19,7 @@ public class ClientView extends View<Client> implements IClientView{
         this.clientService = clientService;
     }
 
+    @Override
     public void lister() {
         List<Client> clients = this.clientService.getAll();
 
@@ -32,6 +33,7 @@ public class ClientView extends View<Client> implements IClientView{
         }
     }
 
+    @Override
     public void  ajout(){
       
        

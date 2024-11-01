@@ -42,4 +42,10 @@ public class ClientRepository extends RepositoryList<Client> implements IClientR
         return null;
     }
 
+    @Override
+    public void activeCompte(int clientId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'activeCompte'");
+    }
+
 }

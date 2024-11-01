@@ -165,4 +165,10 @@ public class ClientRepositoryDb extends RepositoryDb<Client> implements IClientR
         return client;
     }
 
+    @Override
+    public void activeCompte(int clientId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'activeCompte'");
+    }
+
 }

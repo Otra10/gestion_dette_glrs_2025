@@ -47,7 +47,7 @@ public class Client {
     }
 
     public Client(){
-        
+
     }
 
     @Override

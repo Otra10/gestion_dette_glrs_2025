@@ -11,7 +11,7 @@ import com.example.core.repository.impl.RepositoryDb;
 public class UserRepositoryDb extends RepositoryDb<User> implements IUserRepository {
 
     public UserRepositoryDb() {
-        super("user", User.class);
+        super("users", User.class);
     }
 
     @Override
@@ -35,6 +35,33 @@ public class UserRepositoryDb extends RepositoryDb<User> implements IUserReposit
             e.printStackTrace();
         } finally {
             this.closeConnection(); // Fermer la connexion après utilisation
+        }
+        return user;
+    }
+
+    @Override
+    public User findByLoginAndPassword(String login, String password) {
+        String query = "SELECT * FROM " + tableName + " WHERE login = ? AND password = ?";
+        User user = null;
+
+        this.getConnection();
+        try (PreparedStatement stmt = this.connection.prepareStatement(query)) {
+            stmt.setString(1, login);
+            stmt.setString(2, password);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    try {
+                        user = convertToObject(rs);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } // L'exception est maintenant propagée
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            this.closeConnection();
         }
         return user;
     }

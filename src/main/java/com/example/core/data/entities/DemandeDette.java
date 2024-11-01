@@ -8,6 +8,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType; 
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.example.core.data.Enum.EtatDemandeDette;
@@ -23,16 +25,22 @@ public class DemandeDette {
     private Integer id;
 
     private LocalDate date;
-    private double  montantTotal;
+    private double montantTotal;
 
     @Enumerated(EnumType.STRING)
     private EtatDemandeDette etat;
 
-    public DemandeDette(LocalDate date, double montantTotal, EtatDemandeDette etat) {
+    
+    @ManyToOne 
+    @JoinColumn(name = "client_id", nullable = false) 
+    private Client client;
+
+    public DemandeDette(LocalDate date, double montantTotal, EtatDemandeDette etat, Client client) {
         this.date = date;
         this.montantTotal = montantTotal;
         this.etat = etat;
+        this.client = client;
     }
 
-    public DemandeDette(){}
+    public DemandeDette() {}
 }

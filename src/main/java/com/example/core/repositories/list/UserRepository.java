@@ -1,6 +1,5 @@
 package com.example.core.repositories.list;
 
-import com.example.core.data.entities.Client;
 import com.example.core.data.entities.User;
 import com.example.core.repositories.list.interfaces.IUserRepository;
 import com.example.core.repository.impl.RepositoryList;
@@ -14,6 +13,12 @@ public class UserRepository extends RepositoryList<User> implements IUserReposit
             }
         }
         return null;
+    }
+
+    @Override
+    public User findByLoginAndPassword(String login, String password) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findByLoginAndPassword'");
     }
 
 }

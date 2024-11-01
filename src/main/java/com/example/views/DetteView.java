@@ -8,11 +8,13 @@ import com.example.core.data.Enum.EtatDette;
 import com.example.core.data.entities.Client;
 import com.example.core.data.entities.DemandeDette;
 import com.example.core.data.entities.Dette;
+import com.example.core.data.entities.User;
 import com.example.core.services.interfaces.IArticleService;
 import com.example.core.services.interfaces.IClientService;
 import com.example.core.services.interfaces.IDemandeDetteService;
 import com.example.core.services.interfaces.IDetteService;
 import com.example.core.services.interfaces.IPaiementService;
+import com.example.core.session.SessionManager;
 import com.example.views.Interfaces.IDetteView;
 
 public class DetteView extends View<Dette> implements IDetteView {
@@ -23,6 +25,7 @@ public class DetteView extends View<Dette> implements IDetteView {
     IDemandeDetteService demandeDetteService;
     PaiementView paiementView;
     Scanner scanner = new Scanner(System.in);
+    private static User user = SessionManager.getCurrentUser();
 
     public DetteView(IDetteService detteService, IClientService clientService, IArticleService articleService,
             IPaiementService paiementService, PaiementView paiementView, IDemandeDetteService demandeDetteService) {
@@ -48,22 +51,20 @@ public class DetteView extends View<Dette> implements IDetteView {
         }
     }
 
-    public void listerDettes() {
+    @Override
+    public void listerDettes(User user) {
         List<Dette> dettes = detteService.getAll();
 
         if (dettes.isEmpty()) {
             System.out.println("Aucune dette n'est disponible.");
         } else {
             for (Dette dette : dettes) {
-                System.out.println("Dette ID : " + dette.getId());
-                System.out.println("Montant total : " + dette.getMontantTotal());
-                System.out.println("Montant restant : " + dette.getMontantRestant());
-                System.out.println("Client : " + dette.getClient().getSurname());
-
-                // Appeler la méthode pour afficher les paiements associés
-                // paiementView.afficherPaiementsPourDette(dette);
-
-                System.out.println("-------------------------------");
+                if (user.getId() == dette.getClient().getId()) {
+                    System.out.println("Dette ID : " + dette.getId());
+                    System.out.println("Montant total : " + dette.getMontantTotal());
+                    System.out.println("Montant restant : " + dette.getMontantRestant());
+                    System.out.println("Client : " + dette.getClient().getSurname());
+                }
             }
         }
     }
@@ -78,11 +79,10 @@ public class DetteView extends View<Dette> implements IDetteView {
 
         DemandeDette demandeDette = demandeDetteService.findDemandeDetteById(id);
         double montantTotal = demandeDette.getMontantTotal();
-        
+
         scanner.nextLine();
 
         // Article article = articleService.findArticleById(id);
-
 
         System.out.println("Renseigner le Montant versé : ");
 
@@ -104,7 +104,7 @@ public class DetteView extends View<Dette> implements IDetteView {
         } while (etat == null);
 
         LocalDate date = LocalDate.now();
-      
+
         System.out.println("Renseigner l'id du client : ");
 
         id = scanner.nextInt();
@@ -114,8 +114,6 @@ public class DetteView extends View<Dette> implements IDetteView {
         Dette dette = new Dette(montantTotal, montantVerser, montantRestant, etat, date, client);
 
         detteService.store(dette);
-        
-
 
     }
 

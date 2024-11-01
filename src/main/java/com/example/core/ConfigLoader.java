@@ -1,32 +1,42 @@
 package com.example.core;
 
-
 import java.io.InputStream;
 import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
-
-
-
 
 public class ConfigLoader {
 
     private static Map<String, Object> config;
 
     static {
-        try (InputStream inputStream = ConfigLoader.class.getClassLoader().getResourceAsStream("application.yaml")) {
-            Yaml yaml = new Yaml();
-            config = yaml.load(inputStream);
+        Yaml yaml = new Yaml();
+        try (InputStream inputStream = ConfigLoader.class
+                .getClassLoader()
+                .getResourceAsStream("application.yaml")) {
+            if (inputStream != null) {
+                config = yaml.load(inputStream);
+            } else {
+                System.err.println("Le fichier application.yaml est introuvable.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static String getRepositoryType() {
-        return (String) config.get("app.repository");
+        if (config != null && config.containsKey("app")) {
+            Map<String, Object> appConfig = (Map<String, Object>) config.get("app");
+            return (String) appConfig.get("repositoryType");
+        }
+        return null; // Retourne null si config est vide ou si "repositoryType" est introuvable
     }
 
     public static String getPersistenceUnit() {
-        return (String) config.get("app.persistence-unit");
+        if (config != null && config.containsKey("app")) {
+            Map<String, Object> appConfig = (Map<String, Object>) config.get("app");
+            return (String) appConfig.get("persistence-unit");
+        }
+        return null; 
     }
 }

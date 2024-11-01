@@ -38,5 +38,12 @@ public class DemandeDetteRepositoryJpa extends  RepositoryJpa<DemandeDette>  imp
         return query.getResultList();
     }
 
+    @Override
+    public List<DemandeDette> findDemandesByClientId(int client_id) {
+        return entityManager.createQuery("SELECT d FROM DemandeDette d WHERE d.client.id = :client_id", DemandeDette.class)
+                            .setParameter("client_id", client_id)
+                            .getResultList();
+    }
+
     
 }

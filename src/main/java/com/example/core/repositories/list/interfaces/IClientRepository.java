@@ -8,4 +8,5 @@ public interface IClientRepository extends IRepository<Client> {
     Client findClientBySurname(String surname);
     Client ClientById(int id);
     Client findClientByUserId(int userId);
+    void activeCompte(int clientId);
 } 
